@@ -1,0 +1,24 @@
+{
+  "name"         : "time",
+  "version"      : "0.0.1",
+  "description"  : "A better way to keep track",
+  "author"       : "Conrad Buck <cbuck@switchfly.com>",
+  "dependencies" : {
+    "grunt": "~0.4.1",
+    "grunt-contrib-compass": "~0.3.0",
+    "grunt-ember-templates": "0.4.10"
+  },
+  "devDependencies": {
+    "bower": "~0.7.0",
+    "karma": "git://github.com/switchfly/karma.git#build",
+    "karma-chrome-launcher": "~0.0.2",
+    "karma-junit-reporter": "~0.0.2",
+    "karma-mocha": "~0.0.3",
+    "karma-phantomjs-launcher": "~0.0.2",
+    "chai": "~1.5.0",
+    "grunt-karma": "~0.5.0",
+    "sinon-chai": "~2.3.1",
+    "sinon": "~1.6.0"
+  },
+  "engines"      : {"node" : ">= 0.4.7"}
+}
