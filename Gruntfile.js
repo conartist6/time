@@ -30,12 +30,17 @@ module.exports = function(grunt) {
           compile: {
             options: {
               templateName: function (filePath) {
-                  return filePath.replace(/.*\/templates\//, '');
+                var name = /^(.*\/)*(.+)/m.exec(filePath)[2];
+
+                if(/^\.\/app\/components/m.test(filePath)) {
+                    return "components/" + name;
+                }
+                return name;
               }
             },
             files: {
                 './app/ugified/templates-compiled.js' : [
-                    './app/templates/**/*.hbs'
+                    './app/pods/**/*.hbs'
                 ],
             }
           }

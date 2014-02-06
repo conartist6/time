@@ -10,20 +10,32 @@
 
     <!--<script type="text/javascript" src="resources/shared/vendor/modernizr/modernizr.js"></script>-->
 </head>
-<body id="appRoot">
+<body>
     <script type="text/javascript" src="vendor/jquery/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="vendor/select2/select2.js"></script>
-    <script type="text/javascript" src="vendor/underscore/underscore-1.5.2.js"></script>
     <script type="text/javascript" src="vendor/momentjs/moment-with-langs-2.5.1.js"></script>
-
     <script type="text/javascript" src="vendor/handlebars/handlebars-v1.2.1.js"></script>
     <script type="text/javascript" src="vendor/ember/ember-1.3.1-debug.js"></script>
     <script type="text/javascript" src="vendor/ember-data/ember-data-1.0.0beta6.js"></script>
 
-    <script type="text/javascript" src="scripts/application.js"></script>
-    <!-- <script type="text/javascript" src="scripts/libs/utils.js"></script>
-    <script type="text/javascript" src="scripts/models/store.js"></script>
-    <script type="text/javascript" src="scripts/routes/router.js"></script>-->
+    <script type="text/javascript" src="lib/ember_extensions.js"></script>
+    <script type="text/javascript" src="lib/prototype_extensions.js"></script>
+
+    <script type="text/javascript" src="configuration/application.js"></script>
+
+    <script type="text/javascript" src="lib/shuffled_array_proxy.js"></script>
+
+    <script type="text/javascript" src="configuration/store.js"></script>
+    <script type="text/javascript" src="configuration/router.js"></script>
+
+    <script type="text/javascript" src="models/calendar_event.js"></script>
+    <script type="text/javascript" src="models/day.js"></script>
+    <script type="text/javascript" src="models/tp_entity.js"></script>
+
+    <script type="text/javascript" src="pods/index/index_route.js"></script>
+    <script type="text/javascript" src="pods/day/day_route.js"></script>
+    <script type="text/javascript" src="pods/day/day_controller.js"></script>
+    <script type="text/javascript" src="pods/clock/clock_view.js"></script>
 
     <script type="text/javascript" src="ugified/templates-compiled.js"></script>
 </body>

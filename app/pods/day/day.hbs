@@ -1,0 +1,11 @@
+{{#if calendarEvents}}
+	Today's  calendar events are:
+	{{#each calendarEvents}}
+		{{name}}
+	{{/each}}
+	<br/>
+{{/if}}
+Today's stories are:
+{{#each tpEntities}}
+	{{number}}
+{{/each}}
