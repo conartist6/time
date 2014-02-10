@@ -3,12 +3,17 @@
 	App.ShuffledArrayProxy = Em.ArrayProxy.extend({
 		init: function() {
 			this._super();
-			var content = this.get('content');
+			var content = this.get('content'), //
+				contentLength = content.get('length');
 
 			this.muddle = new Array(content.length);
 
-			for(var i = 0; i < content.length; i++) {
-				content.swap(Math.randomIntBetween(0, i), content.length - i);
+			for(var i = 0; i < contentLength; i++) {
+				this.muddle[i] = i;
+			}
+
+			for(var i = 0; i < contentLength; i++) {
+				content.swap(Math.randomIntBetween(0, i), contentLength - i);
 			}
 		},
 		muddle: null,

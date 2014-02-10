@@ -7,5 +7,7 @@
 {{/if}}
 Today's stories are:
 {{#each tpEntities}}
-	{{number}}
+	<div class="colorblock" style="background-color: {{unbound color}};"></div>{{number}}
 {{/each}}
+
+{{adjustable-areas-slider areas=tpEntities}}

@@ -1,0 +1,6 @@
+.ember-view.day .colorblock {
+	display: inline-block;
+	vertical-align: middle;
+	width: 15px;
+	height: 15px;
+}

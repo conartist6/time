@@ -1,0 +1,7 @@
+{{#each _areas}}
+	<div class="area" {{bind-attr style="style"}}>{{name}}</div>
+{{/each}}
+{{#if sliderBeingDragged}}
+	<div class="mask"></div>
+{{/if}}
+{{view SlidersView}}
