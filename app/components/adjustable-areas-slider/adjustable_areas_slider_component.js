@@ -8,19 +8,25 @@
 		classNames: "adjustable-areas-slider-component".w(),
 		areas: null,
 
-		initAreas: function() {
+		colors: null,
+
+		_areas: function() {
 			var areas = this.get('areas'), //
 				nAreas = areas.get('length'), //
 				areaAccountedFor = areas.reduce(function(prev, area) {
 					return prev + area.get('percentage') || 0;
-				}, 0.0);
+				}, 0.0), //
+				_areas = [];
 
-			areas.forEach(function(area) {
-				area.set('percentage', (100.0 - areaAccountedFor) / nAreas);
-			});
-		}.observes('areas.[]'),
+			for(var i = 0; i < nAreas; i++) {
+				areas.objectAt(i).set('percentage', (100 - areaAccountedFor) / nAreas);
+				_areas[i] = SliderAreaController.create({
+					color: areas.objectAt(i).get('color')
+				});
+			}
 
-		colors: null,
+			return _areas;
+		}.property('areas.[]'),
 
 		SlidersView: SlidersView,
 		slidersView: null,
@@ -82,7 +88,7 @@
 		childViews: [],
 		updateSliders: function() {
 			var views = this.get('childViews'), //
-				areas = this.get('parentView.areas'), //
+				areas = this.get('parentView._areas'), //
 				nSliders = Math.max(0, areas.get('length') - 1),
 				positionPercentageSum = 0.0;
 
@@ -101,7 +107,7 @@
 					this.objectAt(i-1).controller.rightStop = this.get('lastObject');
 				}
 			}
-		}.observes('parentView.areas.[]')
+		}.observes('parentView._areas.[]')
 	});
 
 	SliderView.reopen({
