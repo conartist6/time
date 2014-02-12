@@ -8,22 +8,19 @@
 		classNames: "adjustable-areas-slider-component".w(),
 		areas: null,
 
-		colors: null,
-
-		_areas: function() {
+		initAreas: function() {
 			var areas = this.get('areas'), //
 				nAreas = areas.get('length'), //
-				_areas = []; //
+				areaAccountedFor = areas.reduce(function(prev, area) {
+					return prev + area.get('percentage') || 0;
+				}, 0.0);
 
-			for(var i = 0; i < nAreas; i++) {
-				_areas[i] = SliderAreaController.create({
-					percentage: 100.0 / nAreas,
-					color: areas.objectAt(i).get('color')
-				});
-			}
+			areas.forEach(function(area) {
+				area.set('percentage', (100.0 - areaAccountedFor) / nAreas);
+			});
+		}.observes('areas.[]'),
 
-			return _areas;
-		}.property('areas.[]'),
+		colors: null,
 
 		SlidersView: SlidersView,
 		slidersView: null,
@@ -45,38 +42,28 @@
 					var view = this.get('sliderBeingDragged'), //
 						controller, //
 						sliderOffset, //
-						sliderWidth;
+						sliderWidth, //
+						leftStopPct = 0, //
+						rightStopPct = 100;
 					if(view) {
 						controller = view.get('controller');
 						sliderOffset = this.$().offset().left,
 						sliderWidth = this.$().width();
 						controller.set('positionPercentage', Math.min(100, Math.max(0, (event.pageX - sliderOffset) / sliderWidth * 100)));
-						controller.set('leftArea.percentage', controller.get('positionPercentage') - (controller.get('leftStop.controller.positionPercentage') || 0));
-						controller.set('rightArea.percentage', (controller.get('rightStop.controller.positionPercentage') || 100) - controller.get('positionPercentage'));
+
+						if(controller.leftStop) {
+							leftStopPct = controller.leftStop.controller.positionPercentage;
+						}
+						if(controller.rightStop) {
+							rightStopPct = controller.rightStop.controller.positionPercentage;
+						}
+						controller.leftArea.set('percentage', controller.positionPercentage - leftStopPct);
+						controller.rightArea.set('percentage', rightStopPct - controller.positionPercentage);
 					}
 				}.bind(this)
 			}
 		}.property()
 	});
-
-	App.AdjustableAreasSliderComponent.reopenClass({
-		defaultColors: [
-			"DarkSalmon",
-			"FireBrick",
-			"Gold",
-			"Indigo",
-			"LightBlue",
-			"LimeGreen",
-			"LightSlateGray",
-			"Orange",
-			"Pink",
-			"Teal",
-			"Tan"
-		]
-	});
-
-
-
 
 	SliderAreaController = Ember.Object.extend({
 		color: null,
@@ -95,7 +82,7 @@
 		childViews: [],
 		updateSliders: function() {
 			var views = this.get('childViews'), //
-				areas = this.get('parentView._areas'), //
+				areas = this.get('parentView.areas'), //
 				nSliders = Math.max(0, areas.get('length') - 1),
 				positionPercentageSum = 0.0;
 
@@ -111,10 +98,10 @@
 					})
 				}));
 				if(i > 0) {
-					this.objectAt(i-1).set('controller.rightStop', this.get('lastObject'));
+					this.objectAt(i-1).controller.rightStop = this.get('lastObject');
 				}
 			}
-		}.observes('parentView._areas.[]')
+		}.observes('parentView.areas.[]')
 	});
 
 	SliderView.reopen({
@@ -125,5 +112,21 @@
 		setPosition: function(positionPercentage) {
 			this.$().css('margin-left', this.get('controller.positionPercentage') + "%");
 		}.observes('controller.positionPercentage')
+	});
+
+	App.AdjustableAreasSliderComponent.reopenClass({
+		defaultColors: [
+			"DarkSalmon",
+			"FireBrick",
+			"Gold",
+			"Indigo",
+			"LightBlue",
+			"LimeGreen",
+			"LightSlateGray",
+			"Orange",
+			"Pink",
+			"Teal",
+			"Tan"
+		]
 	});
 })(App, Ember, moment);

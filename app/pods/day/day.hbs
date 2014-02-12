@@ -6,8 +6,9 @@
 	<br/>
 {{/if}}
 Today's stories are:
-{{#each tpEntities}}
+{{#each tpCandidates}}
 	<div class="colorblock" style="background-color: {{unbound color}};"></div>{{number}}
+	{{input type="checkbox" checked=wasSpent}}
 {{/each}}
 
-{{adjustable-areas-slider areas=tpEntities}}
+{{adjustable-areas-slider areas=tpTimeSpent}}
