@@ -7,26 +7,31 @@
 				}), //
 				tpEntities = Em.ArrayController.create({
 					itemController: 'DayTpEntity',
-					content: this.get('tpTimeSpent'),
+					content: this.get('model.tpTimeSpent'),
 					container: this.get('container')
 				});
 			tpEntities.forEach(function(entity, index) {
 				entity.set('color', shuffledColors.objectAt(index % shuffledColors.get('length')));
 			});
 
-			return tpEntities
-		}.property('tpTimeSpent.[]'),
+			return tpEntities;
+			return [];
+		}.property('model.tpTimeSpent.[]'),
+
 		tpTimeSpent: function() {
 			return this.get('tpCandidates').filterBy('wasSpent');
-		}.property('tpTimeSpent.@each.wasSpent'),
+		}.property('model.tpTimeSpent.@each.wasSpent'),
+
 		moment: function() {
 			return moment.unix(this.get('timestamp'));
 		}.property('timestamp'),
+
 		tomorrow: function() {
-			return generateUrlMoment(this.get('moment').add('days', 1));
+			return App.Day.generateUrlMoment(moment(this.get('moment')).add('days', 1));
 		}.property('moment'),
+
 		yesterday: function() {
-			return generateUrlMoment(this.get('moment').subtract('days', 1));
+			return App.Day.generateUrlMoment(moment(this.get('moment')).subtract('days', 1));
 		}.property('moment')
 	});
 })(Ember, App);

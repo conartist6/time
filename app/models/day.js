@@ -9,15 +9,13 @@
 
 	App.Day.reopenClass({
 		parseUrlMoment: function(str) {
-			// return moment(str, ["D-MMM", "D-MMM-YYYY"]);
-			return moment();
+			return moment(str, ["D-MMM", "D-MMM-YYYY"]);
 		},
 		generateUrlMoment: function(dayMoment) {
-			// var format;
-			// if(moment().year() == dayMoment.year()) { format = "D-MMM" }
-			// else { format = "D-MMM-YYYY" }
-			// return dayMoment.format(format);
-			return "";
+			var format;
+			if(moment().year() == dayMoment.year()) { format = "D-MMM" }
+			else { format = "D-MMM-YYYY" }
+			return dayMoment.format(format);
 		}
 	});
 
