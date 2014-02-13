@@ -6,17 +6,27 @@
 					content: App.AdjustableAreasSliderComponent.defaultColors
 				}), //
 				tpEntities = Em.ArrayController.create({
-					itemController: App.DayTpEntityController,
-					content: this.get('content.tpTimeSpent')
+					itemController: 'DayTpEntity',
+					content: this.get('tpTimeSpent'),
+					container: this.get('container')
 				});
 			tpEntities.forEach(function(entity, index) {
 				entity.set('color', shuffledColors.objectAt(index % shuffledColors.get('length')));
 			});
 
 			return tpEntities
-		}.property('content.tpTimeSpent.[]'),
+		}.property('tpTimeSpent.[]'),
 		tpTimeSpent: function() {
 			return this.get('tpCandidates').filterBy('wasSpent');
-		}.property('content.tpTimeSpent.@each.wasSpent')
+		}.property('tpTimeSpent.@each.wasSpent'),
+		moment: function() {
+			return moment.unix(this.get('timestamp'));
+		}.property('timestamp'),
+		tomorrow: function() {
+			return generateUrlMoment(this.get('moment').add('days', 1));
+		}.property('moment'),
+		yesterday: function() {
+			return generateUrlMoment(this.get('moment').subtract('days', 1));
+		}.property('moment')
 	});
 })(Ember, App);

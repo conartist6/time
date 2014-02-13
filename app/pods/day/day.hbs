@@ -7,8 +7,14 @@
 {{/if}}
 Today's stories are:
 {{#each tpCandidates}}
-	<div class="colorblock" style="background-color: {{unbound color}};"></div>{{number}}
-	{{input type="checkbox" checked=wasSpent}}
+	<div>
+		{{input type="checkbox" checked=wasSpent}}
+		<div class="colorblock" style="background-color: {{unbound color}};"></div>
+		{{on.number}} - {{on.name}}: {{minutes}} minutes spent.
+	</div>
 {{/each}}
 
 {{adjustable-areas-slider areas=tpTimeSpent}}
+
+{{#link-to "day" yesterday}}Go Back{{/link-to}}
+{{#link-to "day" tomorrow}}Continue{{/link-to}}

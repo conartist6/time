@@ -12,16 +12,29 @@
 
 		_areas: function() {
 			var areas = this.get('areas'), //
+				area, //
 				nAreas = areas.get('length'), //
+				nAreasNoEstimate = 0, //
 				areaAccountedFor = areas.reduce(function(prev, area) {
+					if(!area.get('percentage')) nAreasNoEstimate++;
 					return prev + area.get('percentage') || 0;
 				}, 0.0), //
 				_areas = [];
 
+			//if all items for day have areas, stretch
+			//else stretch evenly for all items with 0 time.
+
+
 			for(var i = 0; i < nAreas; i++) {
-				areas.objectAt(i).set('percentage', (100 - areaAccountedFor) / nAreas);
+				area = areas.objectAt(i)
+				if(nAreasNoEstimate == 0) {
+					area.set('percentage', 100.0 / areaAccountedFor * area.get('percentage'));
+				} else if(!area.get('percentage')) {
+					area.set('percentage', (100.0 - areaAccountedFor) / nAreasNoEstimate);
+				}
 				_areas[i] = SliderAreaController.create({
-					color: areas.objectAt(i).get('color')
+					content: area,
+					color: area.get('color')
 				});
 			}
 
@@ -72,11 +85,12 @@
 	});
 
 	SliderAreaController = Ember.Object.extend({
+		content: null,
 		color: null,
-		percentage: null,
 		style: function() {
 			return "background-color: %@; width: %@%;".fmt(this.get('color'), this.get('percentage'));
-		}.property('percentage', 'color')
+		}.property('percentage', 'color'),
+		percentage: Ember.computed.alias('content.percentage')
 	});
 
 	SlidersView.reopen({
