@@ -99,10 +99,8 @@
 			this._super();
 			this.set('parentView.slidersView', this);
 		},
-		childViews: [],
 		updateSliders: function() {
-			var views = this.get('childViews'), //
-				areas = this.get('parentView._areas'), //
+			var areas = this.get('parentView._areas'), //
 				nSliders = Math.max(0, areas.get('length') - 1),
 				positionPercentageSum = 0.0;
 

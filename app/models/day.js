@@ -11,7 +11,7 @@
 		parseUrlMoment: function(str) {
 			return moment(str, ["D-MMM", "D-MMM-YYYY"]);
 		},
-		generateUrlMoment: function(dayMoment) {
+		formatMomentForURL: function(dayMoment) {
 			var format;
 			if(moment().year() == dayMoment.year()) { format = "D-MMM" }
 			else { format = "D-MMM-YYYY" }

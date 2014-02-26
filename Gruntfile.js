@@ -40,7 +40,8 @@ module.exports = function(grunt) {
             },
             files: {
                 './app/ugified/templates-compiled.js' : [
-                    './app/**/*.hbs'
+                    './app/components/*/*.hbs',
+                    './app/pods/**/*.hbs'
                 ],
             }
           }

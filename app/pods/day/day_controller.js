@@ -16,7 +16,7 @@
 
 			return tpEntities;
 			return [];
-		}.property('model.tpTimeSpent.[]'),
+		}.property('model.tpTimeSpent.[]'), //`model.' because we're shadowing a model property
 
 		tpTimeSpent: function() {
 			return this.get('tpCandidates').filterBy('wasSpent');
@@ -27,11 +27,11 @@
 		}.property('timestamp'),
 
 		tomorrow: function() {
-			return App.Day.generateUrlMoment(moment(this.get('moment')).add('days', 1));
+			return App.Day.formatMomentForURL(moment(this.get('moment')).add('days', 1));
 		}.property('moment'),
 
 		yesterday: function() {
-			return App.Day.generateUrlMoment(moment(this.get('moment')).subtract('days', 1));
+			return App.Day.formatMomentForURL(moment(this.get('moment')).subtract('days', 1));
 		}.property('moment')
 	});
 })(Ember, App);
