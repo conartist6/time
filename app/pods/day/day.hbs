@@ -16,13 +16,7 @@ Today's stories are:
 
 {{adjustable-areas-slider areas=tpTimeSpent}}
 
-{{cal-endar days=daysInMonth}}
-
-{{#view App.Month}}
-	{{#each this itemController="calendarDayController"}}
-
-	{{/each}}
-{{/view}}
+{{calendar- month=timestamp}}
 
 {{#link-to "day" yesterday}}Go Back{{/link-to}}
 {{#link-to "day" tomorrow}}Continue{{/link-to}}

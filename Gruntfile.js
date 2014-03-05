@@ -30,17 +30,24 @@ module.exports = function(grunt) {
           compile: {
             options: {
               templateName: function (filePath) {
-                var name = /^(.*\/)*(.+)/m.exec(filePath)[2];
+                var fileName = /^(.*\/)*(.+)/m.exec(filePath)[2],
+                    componentPath = /^\.\/app\/components\/(.*)/m.exec(filePath),
+                    componentName;
 
-                if(/^\.\/app\/components/m.test(filePath)) {
-                    return "components/" + name;
+                if(componentPath) {
+                    componentPath = componentPath[1];
+                    componentName = /^[^\/]*/m.exec(componentPath)[0];
+                    if(/templates/.test(componentPath)) {
+                        componentName += "/" + fileName;
+                    }
+                    return "components/" + componentName;
                 }
-                return name;
+                return fileName;
               }
             },
             files: {
                 './app/ugified/templates-compiled.js' : [
-                    './app/components/*/*.hbs',
+                    './app/components/**/*.hbs',
                     './app/pods/**/*.hbs'
                 ],
             }
