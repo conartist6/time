@@ -31,18 +31,16 @@ module.exports = function(grunt) {
             options: {
               templateName: function (filePath) {
                 var fileName = /^(.*\/)*(.+)/m.exec(filePath)[2],
-                    componentPath = /^\.\/app\/components\/(.*)/m.exec(filePath),
+                    fullPath = /^\.\/app\/[^\/]*\/(.*)\/.*/m.exec(filePath),
+                    relativePath,
                     componentName;
-
-                if(componentPath) {
-                    componentPath = componentPath[1];
-                    componentName = /^[^\/]*/m.exec(componentPath)[0];
-                    if(/templates/.test(componentPath)) {
-                        componentName += "/" + fileName;
-                    }
-                    return "components/" + componentName;
+                if(fullPath) {
+                    relativePath = fullPath[1];
                 }
-                return fileName;
+                if(/^\.\/app\/components\//m.test(fullPath)) {
+                    relativePath = "components/" + relativePath;
+                }
+                return relativePath;
               }
             },
             files: {

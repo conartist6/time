@@ -2,7 +2,8 @@
 	"use strict";
 	var DefaultHeaderView = Em.View.extend(),
 		DefaultDayView = Em.View.extend(),
-		HeaderController = Em.Object.extend();
+		HeaderController = Em.Object.extend(),
+		WeekController = Em.ArrayController.extend();
 
 	App.CalendarComponent = Em.Component.extend({
 		didInsertElement: function () {
@@ -12,8 +13,6 @@
 		tagName: "table",
 
 		classNames: "calendar-component".w(),
-
-		dayItemController: undefined,
 
 		month: function(key, value, oldValue) {
 			var _month = oldValue,
@@ -58,17 +57,17 @@
 				days = [];
 				for(var day = moment(week); day.isBefore(nextWeek); day.add('days', 1)) {
 					days.push({
-						moment: day,
+						moment: moment(day),
 						date: day.date(),
-						urlDate: App.Day.formatMomentForURL(day),
 						isInMonth: (day.isAfter(month) || day.isSame(month)) && day.isBefore(endOfMonth),
-						_dayView: this.get('dayView')
+						dayView: this.get('dayView')
 					});
 				}
 
 				weeks.push({
-					days: Em.ArrayController.create({
-						itemController: this.get('dayItemController'),
+					days: WeekController.create({
+						itemController: this.get('dayController'),
+						container: this.get('container'),
 						content: days
 					})
 				});
@@ -77,19 +76,34 @@
 			return weeks;
 		}.property('month'),
 
-		headerView: DefaultHeaderView,
+		headerView: function (key, value, oldValue) {
+			var view;
+			if(arguments.length > 1) {
+				view = value;
+				if(typeof view == "string") {
+					view = this.get('container').lookup('view:' + view);
+				}
+				view = view.extend({
+					controller: HeaderController.create({
+						calendar: this
+					})
+				});
+			}
 
-		dayView: DefaultDayView,
+			return view || DefaultHeaderView;
+		}.property(),
 
-		_headerView: function () {
-			var self = this;
+		dayView: function (key, value, oldValue) {
+			var view;
+			if(arguments.length > 1) {
+				view = value;
+				if(typeof view == "string") {
+					view = this.get('container').lookupFactory('view:' + view);
+				}
+			}
 
-			return this.get('headerView').extend({
-				controller: HeaderController.create({
-					calendar: self,
-				})
-			});
-		}.property('headerView'),
+			return view || DefaultDayView;
+		}.property()
 	});
 
 	HeaderController.reopen({

@@ -4,18 +4,18 @@
 	padding: 10px;
 }
 
+.adjustable-areas-slider-component:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 .adjustable-areas-slider-component .mask{
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	top: 0;
 	left: 0;
-}
-
-.adjustable-areas-slider-component:after {
-	content: "";
-	display: table-cell;
-	clear: both;
 }
 
 .adjustable-areas-slider-component > .area {

@@ -67,6 +67,7 @@
 						if(controller.rightStop) {
 							rightStopPct = controller.rightStop.controller.positionPercentage;
 						}
+						controller.set('positionPercentage', Math.min(controller.positionPercentage, 100));
 						controller.leftArea.set('percentage', controller.positionPercentage - leftStopPct);
 						if(controller.rightArea) {
 							controller.rightArea.set('percentage', rightStopPct - controller.positionPercentage);

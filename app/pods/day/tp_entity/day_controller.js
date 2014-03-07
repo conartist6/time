@@ -1,6 +1,6 @@
 (function(Em, App) {
 	"use strict"
-	App.DayTpEntityController = Em.ObjectController.extend({
+	App.TpEntityDayController = Em.ObjectController.extend({
 		color: null,
 	});
 })(Ember, App);

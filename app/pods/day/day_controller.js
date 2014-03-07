@@ -6,7 +6,7 @@
 					content: App.AdjustableAreasSliderComponent.defaultColors
 				}), //
 				tpEntities = Em.ArrayController.create({
-					itemController: 'DayTpEntity',
+					itemController: 'TpEntityDay',
 					content: this.get('model.tpTimeSpent'),
 					container: this.get('container')
 				});
