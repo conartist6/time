@@ -49,28 +49,25 @@
 					this.set('sliderBeingDragged', null);
 				}.bind(this),
 				mouseMove: function(event) {
-					var view = this.get('sliderBeingDragged'), //
-						controller, //
-						sliderOffset, //
-						sliderWidth, //
-						leftStopPct = 0, //
-						rightStopPct = 100;
+					var view = this.get('sliderBeingDragged'),
+						sliderOffset,
+						sliderWidth,
+						leftStopPct = 0,
+						rightStopPct;
 					if(view) {
-						controller = view.get('controller');
 						sliderOffset = this.$().offset().left,
 						sliderWidth = this.$().width();
-						controller.set('positionPercentage', Math.min(100, Math.max(0, (event.pageX - sliderOffset) / sliderWidth * 100)));
+						view.set('positionPercentage', Math.min(100, Math.max(0, (event.pageX - sliderOffset) / sliderWidth * 100)));
 
-						if(controller.leftStop) {
-							leftStopPct = controller.leftStop.controller.positionPercentage;
+						if(view.leftStop) {
+							leftStopPct = view.leftStop.positionPercentage;
 						}
-						if(controller.rightStop) {
-							rightStopPct = controller.rightStop.controller.positionPercentage;
+						if(view.rightStop) {
+							rightStopPct = view.rightStop.positionPercentage;
 						}
-						controller.set('positionPercentage', Math.min(controller.positionPercentage, 100));
-						controller.leftArea.set('percentage', controller.positionPercentage - leftStopPct);
-						if(controller.rightArea) {
-							controller.rightArea.set('percentage', rightStopPct - controller.positionPercentage);
+						view.leftArea.set('percentage', view.positionPercentage - leftStopPct);
+						if(view.rightArea) {
+							view.rightArea.set('percentage', rightStopPct - view.positionPercentage);
 						}
 					}
 				}.bind(this)
@@ -99,6 +96,7 @@
 		init: function () {
 			this._super();
 			this.set('parentView.slidersView', this);
+			this.updateSliders();
 		},
 		updateSliders: function() {
 			var areas = this.get('parentView._areas'), //
@@ -109,15 +107,13 @@
 			for(var i = 0; i < nSliders; i++) {
 				positionPercentageSum += areas.objectAt(i).get('percentage');
 				this.pushObject(SliderView.create({
-					controller: Ember.Object.create({
-						leftArea: areas.objectAt(i),
-						rightArea: areas.objectAt(i+1),
-						leftStop: this.get('lastObject'),
-						positionPercentage: positionPercentageSum
-					})
+					leftArea: areas.objectAt(i),
+					rightArea: areas.objectAt(i+1),
+					leftStop: this.objectAt(i-1),
+					positionPercentage: positionPercentageSum
 				}));
 				if(i > 0) {
-					this.objectAt(i-1).controller.rightStop = this.get('lastObject');
+					this.objectAt(i-1).rightStop = this.objectAt(i);
 				}
 			}
 		}.observes('parentView._areas.[]')
@@ -125,12 +121,17 @@
 
 	SliderView.reopen({
 		classNames: "stop".w(),
+		leftArea: null,
+		rightArea: null,
+		leftStop: null,
+		rightStop: null,
+		positionPercentage: undefined,
 		didInsertElement: function () {
 			this.setPosition();
 		},
 		setPosition: function(positionPercentage) {
-			this.$().css('margin-left', this.get('controller.positionPercentage') + "%");
-		}.observes('controller.positionPercentage')
+			this.$().css('margin-left', this.get('positionPercentage') + "%");
+		}.observes('positionPercentage')
 	});
 
 	App.AdjustableAreasSliderComponent.reopenClass({
