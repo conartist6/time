@@ -1,6 +1,7 @@
 (function(App, Em, moment) {
 	"use strict";
 	App.ClockView = Em.View.extend({
+		classNames: "clock".w(),
 		didInsertElement: function() {
 			this.timer = this.updateTime();
 		},

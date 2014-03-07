@@ -14,11 +14,6 @@
 			var areas = this.get('areas'), //
 				area, //
 				nAreas = areas.get('length'), //
-				nAreasNoEstimate = 0, //
-				areaAccountedFor = areas.reduce(function(prev, area) {
-					if(!area.get('percentage')) nAreasNoEstimate++;
-					return prev + area.get('percentage') || 0;
-				}, 0.0), //
 				_areas = [];
 
 			//if all items for day have areas, stretch
@@ -27,11 +22,7 @@
 
 			for(var i = 0; i < nAreas; i++) {
 				area = areas.objectAt(i)
-				if(nAreasNoEstimate == 0) {
-					area.set('percentage', 100.0 / areaAccountedFor * area.get('percentage'));
-				} else if(!area.get('percentage')) {
-					area.set('percentage', (100.0 - areaAccountedFor) / nAreasNoEstimate);
-				}
+
 				_areas[i] = SliderAreaController.create({
 					content: area,
 					color: area.get('color')
@@ -77,7 +68,9 @@
 							rightStopPct = controller.rightStop.controller.positionPercentage;
 						}
 						controller.leftArea.set('percentage', controller.positionPercentage - leftStopPct);
-						controller.rightArea.set('percentage', rightStopPct - controller.positionPercentage);
+						if(controller.rightArea) {
+							controller.rightArea.set('percentage', rightStopPct - controller.positionPercentage);
+						}
 					}
 				}.bind(this)
 			}
@@ -90,7 +83,14 @@
 		style: function() {
 			return "background-color: %@; width: %@%;".fmt(this.get('color'), this.get('percentage'));
 		}.property('percentage', 'color'),
-		percentage: Ember.computed.alias('content.percentage')
+		minutes: Ember.computed.alias('content.minutes'),
+		percentage: function(key, value) {
+			if(arguments.length > 1) {
+				this.set('minutes', Math.ceil(value / 100 * 8 * 60));
+				return value;
+			}
+			return this.get('minutes') / (8 * 60) * 100;
+		}.property('minutes')
 	});
 
 	SlidersView.reopen({
@@ -101,7 +101,7 @@
 		},
 		updateSliders: function() {
 			var areas = this.get('parentView._areas'), //
-				nSliders = Math.max(0, areas.get('length') - 1),
+				nSliders = areas.get('length'),
 				positionPercentageSum = 0.0;
 
 			this.setObjects([]);

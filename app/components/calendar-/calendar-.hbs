@@ -1,6 +1,25 @@
-{{view this._headerView}}
-<div class="calendar-component-days">
-{{#each _days}}
-	{{view this._dayView}}
-{{/each}}
-</div>
+<thead>
+	<tr>
+		<td colspan="7">
+			{{view this._headerView}}
+		</td>
+	</tr>
+	<tr>
+		{{#each dayNames}}
+			<th>
+				{{this}}
+			</th>
+		{{/each}}
+	</tr>
+</thead>
+<tbody class="calendar-component-days">
+	{{#each _weeks}}
+		<tr>
+			{{#each days}}
+				<td>
+					{{view this._dayView}}
+				</td>
+			{{/each}}
+		</tr>
+	{{/each}}
+</tbody>

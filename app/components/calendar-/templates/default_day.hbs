@@ -1,1 +1,7 @@
-{{date}}
+{{#if isInMonth}}
+	{{#link-to 'day' urlDate}}
+		{{date}}
+	{{/link-to}}
+{{else}}
+	<span class="disabled">{{date}}</span>
+{{/if}}

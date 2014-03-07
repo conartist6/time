@@ -9,6 +9,8 @@
 			this.$().children().first().addClass('calendar-component-head');
 		},
 
+		tagName: "table",
+
 		classNames: "calendar-component".w(),
 
 		dayItemController: undefined,
@@ -32,31 +34,47 @@
 			return _month;
 		}.property(),
 
-		_days: function () {
-			var days = [],
+		dayNames: function() {
+			return moment.langData()._weekdaysMin;
+		}.property(),
+
+		_weeks: function () {
+			var weeks = [],
+				days,
 				month = this.get('month'),
 				endOfMonth,
-				startOfFirstWeekInMonth,
-				endOfLastWeekInMonth;
+				firstWeek,
+				lastWeek,
+				nextWeek;
 
 			if(!month) return null;
 
-			startOfFirstWeekInMonth = moment(month).startOf('week');
+			firstWeek = moment(month).startOf('week');
 			endOfMonth = moment(month).endOf('month');
-			endOfLastWeekInMonth = moment(endOfMonth).endOf('week');
+			lastWeek = moment(endOfMonth).startOf('week').add('weeks', 1);
 
-			for(var day = startOfFirstWeekInMonth; day.isBefore(endOfLastWeekInMonth); day.add('days', 1)) {
-				days.push({
-					moment: day,
-					date: day.date(),
-					isInMonth: day.isAfter(month) && day.isBefore(endOfMonth),
-					_dayView: this.get('_dayView')
-				})
+			for(var week = firstWeek; week.isBefore(lastWeek); week.add('weeks', 1)) {
+				nextWeek = moment(week).add('weeks', 1);
+				days = [];
+				for(var day = moment(week); day.isBefore(nextWeek); day.add('days', 1)) {
+					days.push({
+						moment: day,
+						date: day.date(),
+						urlDate: App.Day.formatMomentForURL(day),
+						isInMonth: (day.isAfter(month) || day.isSame(month)) && day.isBefore(endOfMonth),
+						_dayView: this.get('dayView')
+					});
+				}
+
+				weeks.push({
+					days: Em.ArrayController.create({
+						itemController: this.get('dayItemController'),
+						content: days
+					})
+				});
 			}
-			return Em.ArrayController.create({
-				itemController: this.get('dayItemController'),
-				content: days
-			});
+
+			return weeks;
 		}.property('month'),
 
 		headerView: DefaultHeaderView,
@@ -67,18 +85,11 @@
 			var self = this;
 
 			return this.get('headerView').extend({
-				classNames: 'calendar-component-head'.w(),
 				controller: HeaderController.create({
 					calendar: self,
 				})
 			});
 		}.property('headerView'),
-
-		_dayView: function () {
-			return this.get('dayView').extend({
-				classNames: 'calendar-component-day'.w()
-			});
-		}.property('dayView')
 	});
 
 	HeaderController.reopen({

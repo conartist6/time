@@ -1,0 +1,18 @@
+body {
+	padding: 22px;
+}
+
+header {
+	text-align: center;
+	margin-bottom: 22px;
+}
+
+header .title {
+	display: block;
+	position: absolute;
+}
+
+footer {
+	position: absolute;
+	bottom: 22px;
+}
