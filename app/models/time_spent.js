@@ -2,7 +2,7 @@
 	"use strict"
 	App.TimeSpent = DS.Model.extend({
 		minutes: DS.attr('number'),
-		wasSpent: DS.attr('boolean', { defaultValue: true })
+		wasSpent: DS.attr('boolean', { defaultValue: false })
 	});
 
 	App.TpTimeSpent = App.TimeSpent.extend({

@@ -16,10 +16,6 @@
 				nAreas = areas.get('length'), //
 				_areas = [];
 
-			//if all items for day have areas, stretch
-			//else stretch evenly for all items with 0 time.
-
-
 			for(var i = 0; i < nAreas; i++) {
 				area = areas.objectAt(i)
 
@@ -51,24 +47,11 @@
 				mouseMove: function(event) {
 					var view = this.get('sliderBeingDragged'),
 						sliderOffset,
-						sliderWidth,
-						leftStopPct = 0,
-						rightStopPct;
+						sliderWidth;
 					if(view) {
 						sliderOffset = this.$().offset().left,
 						sliderWidth = this.$().width();
-						view.set('positionPercentage', Math.min(100, Math.max(0, (event.pageX - sliderOffset) / sliderWidth * 100)));
-
-						if(view.leftStop) {
-							leftStopPct = view.leftStop.positionPercentage;
-						}
-						if(view.rightStop) {
-							rightStopPct = view.rightStop.positionPercentage;
-						}
-						view.leftArea.set('percentage', view.positionPercentage - leftStopPct);
-						if(view.rightArea) {
-							view.rightArea.set('percentage', rightStopPct - view.positionPercentage);
-						}
+						view.set('positionPercentage', (event.pageX - sliderOffset) / sliderWidth * 100);
 					}
 				}.bind(this)
 			}
@@ -82,12 +65,13 @@
 			return "background-color: %@; width: %@%;".fmt(this.get('color'), this.get('percentage'));
 		}.property('percentage', 'color'),
 		minutes: Ember.computed.alias('content.minutes'),
-		percentage: function(key, value) {
+		percentage: function(key, pct) {
 			if(arguments.length > 1) {
-				this.set('minutes', Math.ceil(value / 100 * 8 * 60));
-				return value;
+				this.set('minutes', Math.ceil(pct / 100 * 8 * 60));
+			} else {
+				pct = this.get('minutes') / (8 * 60) * 100;
 			}
-			return this.get('minutes') / (8 * 60) * 100;
+			return Math.min(100, pct);
 		}.property('minutes')
 	});
 
@@ -101,11 +85,12 @@
 		updateSliders: function() {
 			var areas = this.get('parentView._areas'), //
 				nSliders = areas.get('length'),
-				positionPercentageSum = 0.0;
+				positionPercentageSum = 0.0,
+				lastStop;
 
 			this.setObjects([]);
 			for(var i = 0; i < nSliders; i++) {
-				positionPercentageSum += areas.objectAt(i).get('percentage');
+				positionPercentageSum = Math.min(100, positionPercentageSum + areas.objectAt(i).get('percentage'));
 				this.pushObject(SliderView.create({
 					leftArea: areas.objectAt(i),
 					rightArea: areas.objectAt(i+1),
@@ -125,7 +110,27 @@
 		rightArea: null,
 		leftStop: null,
 		rightStop: null,
-		positionPercentage: undefined,
+		positionPercentage: function(key, pct, oldValue) {
+			var leftStopPct = 0,
+				rightStopPct;
+			if(arguments.length > 1) {
+				pct = Math.min(100, Math.max(0, pct));
+				if(this.leftStop) {
+					leftStopPct = this.leftStop.positionPercentage;
+				}
+				if(this.rightStop) {
+					rightStopPct = this.rightStop.positionPercentage;
+				}
+				this.leftArea.set('percentage', pct - leftStopPct);
+				if(this.rightArea) {
+					// if(!this.get('rightStop.rightArea')) {
+					// 	//This is the last segment, ensure it doesn't overflow 100%
+					// 	lastStop.leftArea.set('percentage', lastStop.positionPercentage - lastStop.leftStop.positionPercentage);
+					// }		
+					this.rightArea.set('percentage', rightStopPct - pct);
+				}
+			}
+		}.property(),
 		didInsertElement: function () {
 			this.setPosition();
 		},
