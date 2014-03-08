@@ -29,7 +29,6 @@
 		}.property('areas.[]'),
 
 		SlidersView: SlidersView,
-		slidersView: null,
 
 		sliderBeingDragged: null,	
 
@@ -77,14 +76,13 @@
 				pct = this.get('minutes') / (8 * 60) * 100;
 			} 
 			return pct;
-		}.property('minutes')
+		}.property()
 	});
 
 	SlidersView.reopen({
 		classNames: "sliders-container".w(),
 		init: function () {
 			this._super();
-			this.set('parentView.slidersView', this);
 			this.updateSliders();
 		},
 		updateSliders: function() {

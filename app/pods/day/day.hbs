@@ -14,9 +14,11 @@ Today's stories are:
 	</div>
 {{/each}}
 
-{{adjustable-areas-slider areas=tpTimeSpent}}
+{{!adjustable-areas-slider areas=tpTimeSpent}}
 
 {{calendar- month=timestamp dayController="CalendarDay" dayView="CalendarDay"}}
+
+Tracking {{totalTpTimeNotSubmitted}} unsubmitted hours.
 
 {{#link-to "day" tomorrow}}Continue{{/link-to}}
 <a href="#" {{action "submitTimes"}}>Submit All</a>

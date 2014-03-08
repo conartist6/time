@@ -15,12 +15,11 @@
 			});
 
 			return tpEntities;
-			return [];
-		}.property('model.tpTimeSpent.[]'), //`model.' because we're shadowing a model property
+		}.property('model.tpTimeSpent.@each'), //`model.' because we're shadowing a model property
 
-		tpTimeSpent: function() {
-			return this.get('tpCandidates').filterBy('wasSpent');
-		}.property('model.tpTimeSpent.@each.wasSpent'),
+		// tpTimeSpent: function() {
+		// 	return this.get('tpCandidates').filterBy('wasSpent');
+		// }.property('model.tpTimeSpent.@each.wasSpent'),
 
 		moment: function() {
 			return moment.unix(this.get('timestamp'));
@@ -32,6 +31,10 @@
 
 		yesterday: function() {
 			return App.Day.formatMomentForURL(moment(this.get('moment')).subtract('days', 1));
-		}.property('moment')
+		}.property('moment'),
+
+		totalTpTimeNotSubmitted: function() {
+			debugger;
+		}.property('tpTimeSpent')
 	});
 })(Ember, App);

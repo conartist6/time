@@ -18,15 +18,15 @@
 	App.TpTimeSpent.FIXTURES = [
 		{
 			id: "ember1001",
-			minutes: 0,	
+			minutes: 240,	
 			on: "55555",
 		}, {
 			id: "ember1002",
-			minutes: 0,
+			minutes: 240,
 			on: "32088",
 		}, {
 			id: "1",
-			minutes: 61,
+			minutes: 60,
 			on: "32088",
 		}, {
 			id: "2",
