@@ -61,17 +61,22 @@
 	SliderAreaController = Ember.Object.extend({
 		content: null,
 		color: null,
+
 		style: function() {
 			return "background-color: %@; width: %@%;".fmt(this.get('color'), this.get('percentage'));
 		}.property('percentage', 'color'),
+
 		minutes: Ember.computed.alias('content.minutes'),
-		percentage: function(key, pct) {
+
+		percentage: function(key, pct, oldValue) {
+			//if there is no cached percentage, create one from minutes.
+			//THE BUG -- setting minutes invalidates cached value on next run loop.
 			if(arguments.length > 1) {
 				this.set('minutes', Math.ceil(pct / 100 * 8 * 60));
 			} else {
 				pct = this.get('minutes') / (8 * 60) * 100;
-			}
-			return Math.min(100, pct);
+			} 
+			return pct;
 		}.property('minutes')
 	});
 
@@ -84,23 +89,26 @@
 		},
 		updateSliders: function() {
 			var areas = this.get('parentView._areas'), //
+				views = [],
 				nSliders = areas.get('length'),
 				positionPercentageSum = 0.0,
 				lastStop;
 
-			this.setObjects([]);
 			for(var i = 0; i < nSliders; i++) {
-				positionPercentageSum = Math.min(100, positionPercentageSum + areas.objectAt(i).get('percentage'));
-				this.pushObject(SliderView.create({
+				views.push(SliderView.create());
+			}
+			for(var i = 0; i < nSliders; i++) {
+				positionPercentageSum += areas.objectAt(i).get('percentage');
+
+				views.objectAt(i).setProperties({
 					leftArea: areas.objectAt(i),
 					rightArea: areas.objectAt(i+1),
-					leftStop: this.objectAt(i-1),
+					leftStop: views.objectAt(i-1),
+					rightStop: views.objectAt(i+1),
 					positionPercentage: positionPercentageSum
-				}));
-				if(i > 0) {
-					this.objectAt(i-1).rightStop = this.objectAt(i);
-				}
+				});
 			}
+			this.setObjects(views);
 		}.observes('parentView._areas.[]')
 	});
 
@@ -110,33 +118,43 @@
 		rightArea: null,
 		leftStop: null,
 		rightStop: null,
+
 		positionPercentage: function(key, pct, oldValue) {
-			var leftStopPct = 0,
-				rightStopPct;
-			if(arguments.length > 1) {
-				pct = Math.min(100, Math.max(0, pct));
+			//We have two sorts of percentages: exact and inexact.
+			//We 'export' to inexact percentages: minutes
+			//When we bring areas back all inexact percentages need to become exact ones
+			//Our strategy is to treat them as exact by ratios and round the last segment if the sum would exceed 100%
+
+			if(arguments.length > 1) {			
+				var leftStopPct = 0,
+					rightStopPct;
+
+				pct = Math.limitToRange(0, 99, pct);
 				if(this.leftStop) {
-					leftStopPct = this.leftStop.positionPercentage;
-				}
-				if(this.rightStop) {
-					rightStopPct = this.rightStop.positionPercentage;
+					leftStopPct = this.leftStop.get('positionPercentage');
 				}
 				this.leftArea.set('percentage', pct - leftStopPct);
-				if(this.rightArea) {
-					// if(!this.get('rightStop.rightArea')) {
-					// 	//This is the last segment, ensure it doesn't overflow 100%
-					// 	lastStop.leftArea.set('percentage', lastStop.positionPercentage - lastStop.leftStop.positionPercentage);
-					// }		
-					this.rightArea.set('percentage', rightStopPct - pct);
+				if(oldValue) {
+					if(this.rightStop) {
+						rightStopPct = this.rightStop.get('positionPercentage');
+					}
+					if(this.rightArea) {
+						this.rightArea.set('percentage', rightStopPct - pct);
+					}
 				}
 			}
+			return pct;
 		}.property(),
+
+		updateSlider: function() {
+			if(this.$()) {
+				this.$().css('margin-left', this.get('positionPercentage') + "%");
+			}
+		}.observes('positionPercentage'),
+
 		didInsertElement: function () {
-			this.setPosition();
-		},
-		setPosition: function(positionPercentage) {
-			this.$().css('margin-left', this.get('positionPercentage') + "%");
-		}.observes('positionPercentage')
+			this.updateSlider();
+		}
 	});
 
 	App.AdjustableAreasSliderComponent.reopenClass({
