@@ -1,0 +1,6 @@
+valuable containerization lessons learned from:
+injecting container by hand
+using this.store vs App.store
+
+Questions:
+why does dayController reload anything when you try to find a record?

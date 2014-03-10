@@ -17,9 +17,13 @@
 			return tpEntities;
 		}.property('model.tpTimeSpent.@each'), //`model.' because we're shadowing a model property
 
-		// tpTimeSpent: function() {
-		// 	return this.get('tpCandidates').filterBy('wasSpent');
-		// }.property('model.tpTimeSpent.@each.wasSpent'),
+		//TODO is it a bug that fixture adapter repopulates models on findAll
+		debugObserver: function() {
+		}.observes('model.tpTimeSpent'),
+
+		tpTimeSpent: function() {
+			return this.get('tpCandidates').filterBy('wasSpent');
+		}.property('model.tpTimeSpent.@each.wasSpent'),
 
 		moment: function() {
 			return moment.unix(this.get('timestamp'));
