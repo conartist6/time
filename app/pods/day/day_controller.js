@@ -2,24 +2,16 @@
 	"use strict"
 	App.DayController = Em.ObjectController.extend({
 		tpCandidates: function() {
-			var shuffledColors = App.ShuffledArrayProxy.create({
-					content: App.AdjustableAreasSliderComponent.defaultColors
-				}), //
-				tpEntities = Em.ArrayController.create({
-					itemController: 'TpEntityDay',
+			return App.TimeCandidateDayController.create({
 					content: this.get('model.tpTimeSpent'),
 					container: this.get('container')
 				});
-			tpEntities.forEach(function(entity, index) {
-				entity.set('color', shuffledColors.objectAt(index % shuffledColors.get('length')));
-			});
-
-			return tpEntities;
 		}.property('model.tpTimeSpent.@each'), //`model.' because we're shadowing a model property
 
-		//TODO is it a bug that fixture adapter repopulates models on findAll
-		debugObserver: function() {
-		}.observes('model.tpTimeSpent'),
+		nextColorStyle: function() {
+			var tpCandidates = this.get('tpCandidates');
+			return "background-color: " + tpCandidates.get('colors').objectAt(tpCandidates.get('length')) + ";";
+		}.property('tpCandidates'),
 
 		tpTimeSpent: function() {
 			return this.get('tpCandidates').filterBy('wasSpent');
@@ -38,7 +30,9 @@
 		}.property('moment'),
 
 		totalTpTimeNotSubmitted: function() {
-			debugger;
-		}.property('tpTimeSpent')
+			return this.store.all('tpTimeSpent').filterBy('isDirty').filterBy('wasSpent').reduce(function (prev, cur) {
+				return prev + Math.floor(cur.get('minutes') / 60);
+			}, 0);
+		}.property('model.tpTimeSpent.@each.minutes', 'model.tpTimeSpent.@each.wasSpent')
 	});
 })(Ember, App);

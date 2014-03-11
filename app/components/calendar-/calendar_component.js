@@ -76,27 +76,25 @@
 			return weeks;
 		}.property('month'),
 
-		headerView: function (key, value, oldValue) {
-			var view;
+		headerView: function (key, view, oldValue) {
 			if(arguments.length > 1) {
-				view = value;
 				if(typeof view == "string") {
 					view = this.get('container').lookup('view:' + view);
 				}
-				view = view.extend({
-					controller: HeaderController.create({
-						calendar: this
-					})
-				});
 			}
 
-			return view || DefaultHeaderView;
+			view = view || DefaultHeaderView;
+			view = view.extend({
+				controller: HeaderController.create({
+					calendar: this
+				})
+			});
+
+			return view;
 		}.property(),
 
-		dayView: function (key, value, oldValue) {
-			var view;
+		dayView: function (key, view, oldValue) {
 			if(arguments.length > 1) {
-				view = value;
 				if(typeof view == "string") {
 					view = this.get('container').lookupFactory('view:' + view);
 				}

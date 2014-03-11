@@ -127,7 +127,7 @@
 				var leftStopPct = 0,
 					rightStopPct;
 
-				pct = Math.limitToRange(0, 99, pct);
+				pct = Math.limitToRange(0, 100, pct);
 				if(this.leftStop) {
 					leftStopPct = this.leftStop.get('positionPercentage');
 				}

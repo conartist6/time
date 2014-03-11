@@ -10,9 +10,15 @@ Today's stories are:
 	<div>
 		{{input type="checkbox" checked=wasSpent}}
 		<div class="colorblock" style="background-color: {{unbound color}};"></div>
-		{{on.number}} - {{on.name}}: {{minutes}} minutes spent.
+		{{on.number}} - {{on.name}}: {{hoursAndMinutes}} spent.
 	</div>
 {{/each}}
+<div>
+	{{input type="checkbox" disabled="true"}}
+	<div class="colorblock" {{bindAttr style=nextColorStyle}}></div>
+	{{input type="text"}}
+</div>
+
 
 {{adjustable-areas-slider areas=tpTimeSpent}}
 
