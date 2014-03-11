@@ -8,20 +8,13 @@
 		classNames: "adjustable-areas-slider-component".w(),
 		areas: null,
 
-		colors: null,
-
 		_areas: function() {
-			var areas = this.get('areas'), //
-				area, //
-				nAreas = areas.get('length'), //
+			var areas = this.get('areas'),
 				_areas = [];
 
-			for(var i = 0; i < nAreas; i++) {
-				area = areas.objectAt(i)
-
+			for(var i = 0; i < areas.get('length'); i++) {
 				_areas[i] = SliderAreaController.create({
-					content: area,
-					color: area.get('color')
+					content: areas.objectAt(i)
 				});
 			}
 
@@ -59,22 +52,24 @@
 
 	SliderAreaController = Ember.Object.extend({
 		content: null,
-		color: null,
 
 		style: function() {
 			return "background-color: %@; width: %@%;".fmt(this.get('color'), this.get('percentage'));
 		}.property('percentage', 'color'),
 
 		minutes: Ember.computed.alias('content.minutes'),
+		color: Ember.computed.alias('content.color'),
 
 		percentage: function(key, pct, oldValue) {
-			//if there is no cached percentage, create one from minutes.
-			//THE BUG -- setting minutes invalidates cached value on next run loop.
+			//This property stores precise percentages, calculates from minutes if it must,
+			//and updates minutes from precise values.
 			if(arguments.length > 1) {
 				this.set('minutes', Math.ceil(pct / 100 * 8 * 60));
+				// this.set('minutes',
+					// Math.ceil(pct / 100 * 8 * 60 / 15 - .5) * 15);
 			} else {
 				pct = this.get('minutes') / (8 * 60) * 100;
-			} 
+			}
 			return pct;
 		}.property()
 	});
@@ -118,11 +113,6 @@
 		rightStop: null,
 
 		positionPercentage: function(key, pct, oldValue) {
-			//We have two sorts of percentages: exact and inexact.
-			//We 'export' to inexact percentages: minutes
-			//When we bring areas back all inexact percentages need to become exact ones
-			//Our strategy is to treat them as exact by ratios and round the last segment if the sum would exceed 100%
-
 			if(arguments.length > 1) {			
 				var leftStopPct = 0,
 					rightStopPct;
@@ -132,7 +122,7 @@
 					leftStopPct = this.leftStop.get('positionPercentage');
 				}
 				this.leftArea.set('percentage', pct - leftStopPct);
-				if(oldValue) {
+				if(oldValue !== undefined) {
 					if(this.rightStop) {
 						rightStopPct = this.rightStop.get('positionPercentage');
 					}

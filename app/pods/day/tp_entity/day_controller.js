@@ -11,8 +11,9 @@
 				hours = duration.hours(),
 				minutes = duration.minutes();
 			return (hours ? hours + " hour" + (hours > 1 ? "s" : "") : "") +
-					((hours && minutes) ? ", " : "") +
-					(minutes ? minutes + " minute" + (minutes > 1 ? "s" : "") : "");
+					((hours && minutes) ? ", " : "") + 
+					((!hours && !minutes) ? "0 minutes" :
+					(minutes ? minutes + " minute" + (minutes !== 1 ? "s" : "") : ""));
 		}.property('minutes')
 	});
 })(Ember, App);

@@ -2,8 +2,6 @@
 	"use strict"
 	App.TimeCandidateDayController = Em.IndexedArrayController.extend({
 		itemController: 'TpEntityDay',
-		colors: App.ShuffledArrayProxy.create({
-			content: App.AdjustableAreasSliderComponent.defaultColors
-		}),
+		colors: null,
 	});
 })(Ember, App);
