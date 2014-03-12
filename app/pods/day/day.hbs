@@ -16,7 +16,7 @@ Today's stories are:
 <div>
 	<form {{action "addCandidate" on="submit"}}>
 		{{input type="checkbox" disabled="true"}}
-		<div class="colorblock" {{bindAttr style=nextColorStyle}}></div>
+		<div class="colorblock" {{bind-attr style=nextColorStyle}}></div>
 		{{input type="text" value=tpNumberInput}}
 		<button type="submit" class="btn">add</button>
 	<form>

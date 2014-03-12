@@ -11,12 +11,6 @@
 				});
 		}.property('model.tpTimeSpent'), //`model.' because we're shadowing a model property
 
-		// colors: function() {
-		// 	return App.ShuffledArrayProxy.create({
-		// 		content: App.AdjustableAreasSliderComponent.defaultColors
-		// 	});
-		// }.property('model'),
-
 		nextColorStyle: function() {
 			var tpCandidates = this.get('tpCandidates');
 			return "background-color: " + tpCandidates.get('colors').objectAt(tpCandidates.get('length')) + ";";
@@ -48,20 +42,22 @@
 
 		actions: {
 			addCandidate: function() {
-				var tpNumberInput = this.get('tpNumberInput'),
+				var self = this,
+					tpNumberInput = this.get('tpNumberInput'),
 					timeSpent,
 					on;
 
 				timeSpent = this.store.createRecord('tpTimeSpent', {
 					minutes: 60,
-					wasSpent: true
+					wasSpent: true,
+					on: this.store.findById('tpEntity', tpNumberInput)
 				});
-				on = this.store.findById('tpEntity', tpNumberInput);
-				on.set('content', {
+
+				timeSpent.set('on.content', {
 					number: tpNumberInput,
 					name: "Unknown"
 				});
-				timeSpent.set('on', on);
+
 				this.get('model.tpTimeSpent').pushObject(timeSpent);
 				this.set('tpNumberInput', "");
 			}

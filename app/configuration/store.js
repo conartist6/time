@@ -1,30 +1,23 @@
 (function(DS, App) {
 	"use strict"
 
+	DS.FixtureAdapter.reopen({
+		simulateRemoteResponse: true,
+		latency: 500
+	});
+
 	App.ApplicationAdapter = DS.FixtureAdapter.extend({
 	});
 
-	App.DayAdapter = DS.FixtureAdapter.extend({
-		find: function(store, type, id) {
-			var fixtures = this.fixturesForType(type),
-			fixture;
-
-			if (fixtures) {
-			  fixture = Ember.A(fixtures).findProperty('id', id);
+	App.DayAdapter = DS.BoundlessFixtureAdapter.extend({
+		emptyCallback: function(store, type, id) {
+			return {
+				timestamp: id
 			}
-
-			if (!fixture) {
-				fixture = {
-					id: id,
-					timestamp: id
-				}
-			}
-
-			return this.simulateRemoteCall(function() {
-				return fixture;
-			}, this);
 		}
 	});
+
+	App.TpEntityAdapter = DS.BoundlessFixtureAdapter.extend({});
 
 	App.ApplicationSerializer = DS.RESTSerializer.extend({
 		normalizeHash: {
