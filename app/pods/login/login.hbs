@@ -1,0 +1,13 @@
+<h1>TIME</h1>
+<form {{action "login" username password on="submit"}}>
+	<div>
+		<label>uuuuusername:</label>
+		{{input type="text" value=username name="username"}}
+	</div>
+	<div>
+		<label>password:</label>
+		{{input type="password" value=password name="password"}}
+	</div>
+
+	<button type="submit">login</button>
+</form>

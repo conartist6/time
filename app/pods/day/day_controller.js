@@ -1,6 +1,6 @@
 (function(Em, App) {
 	"use strict"
-	App.DayController = Em.ObjectController.extend({
+	App.DayController = Em.ObjectController.extend(App.AuthenticatedPage, {
 		tpCandidates: function() {
 			return App.TimeCandidateDayController.create({
 					content: this.get('model.tpTimeSpent'),
@@ -27,11 +27,11 @@
 		}.property('timestamp'),
 
 		tomorrow: function() {
-			return App.Day.formatMomentForURL(moment(this.get('moment')).add('days', 1));
+			return App.DayRoute.formatMomentForURL(moment(this.get('moment')).add('days', 1));
 		}.property('moment'),
 
 		yesterday: function() {
-			return App.Day.formatMomentForURL(moment(this.get('moment')).subtract('days', 1));
+			return App.DayRoute.formatMomentForURL(moment(this.get('moment')).subtract('days', 1));
 		}.property('moment'),
 
 		totalTpTimeNotSubmitted: function() {

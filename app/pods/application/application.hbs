@@ -1,6 +1,8 @@
-<header>
-	<span class="title">TIME</span> {{view App.ClockView}}
-</header>
+{{#if authenticated}}
+	<header>
+		<span class="title">TIME</span> {{view App.ClockView}}
+	</header>
+{{/if}}
 {{outlet}}
 <footer>
 	powered by Switchfly development

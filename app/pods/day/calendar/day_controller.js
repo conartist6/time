@@ -2,7 +2,7 @@
 	"use strict"
 	App.CalendarDayController = Em.ObjectController.extend({
 		urlDate: function() {
-			return App.Day.formatMomentForURL(this.get('moment'));
+			return App.DayRoute.formatMomentForURL(this.get('moment'));
 		}.property('moment'),
 
 		colorCode: null,

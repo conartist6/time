@@ -17,7 +17,14 @@
 		}
 	});
 
-	App.TpEntityAdapter = DS.BoundlessFixtureAdapter.extend({});
+	App.TpEntityAdapter = DS.BoundlessFixtureAdapter.extend({
+		emptyCallback: function(store, type, id) {
+			return {
+				number: id,
+				name: "Unknown"
+			}
+		}
+	});
 
 	App.ApplicationSerializer = DS.RESTSerializer.extend({
 		normalizeHash: {

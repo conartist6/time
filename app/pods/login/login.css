@@ -1,0 +1,44 @@
+.ember-view.login {
+	text-align: center;
+}
+
+.ember-view.login h1 {
+	font-size: 6em;
+}
+
+.ember-view.login form {
+	display: inline-block;
+	text-align: left;
+	margin-left: -15px;
+}
+
+.ember-view.login form > div {
+	float: left;
+	clear: both;
+	position: relative;
+	left: 65px;
+	line-height: 2em;
+}
+
+.ember-view.login label {
+	position: absolute;
+	width: 200px;
+	overflow: visible;
+	text-align: right;
+	left: -220px;
+}
+
+.ember-view.login [name="username"] {
+	width: 150px;
+}
+
+.ember-view.login [name="password"] {
+	width: 130px;
+}
+.ember-view.login button{
+	display: block;
+	clear: both;
+	margin: 0 auto;
+	position: relative;
+	top: 25px;
+}
