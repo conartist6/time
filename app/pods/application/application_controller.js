@@ -3,8 +3,10 @@
 	App.ApplicationController = Em.Controller.extend({
 		username: null,
 
-		authenticated: function () {
-			return !! this.get('username');
-		}.property('username'),
+		authenticated: Em.computed.bool('username'),
+
+		showHeader: function(key, value) {
+			return this.get('authenticated');
+		}.property()
 	});
 })(Ember, App);

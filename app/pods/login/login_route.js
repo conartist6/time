@@ -3,7 +3,7 @@
 	App.LoginRoute = Em.Route.extend({
 		needs: 'login',
 		beforeModel: function() {
-			if(this.get('authenticated')) {
+			if(this.controllerFor('application').get('authenticated')) {
 				transitionToDay();
 			}
 		},
@@ -19,12 +19,8 @@
 
 		actions: {
 			login: function(username, password) {
-				if(this.isAuthorized(username)) {
-					this.transitionToDay("1391760000");
-					return true;
-				} else {
-					return false;
-				}
+				this.transitionToDay("1391760000");
+				return this.isAuthorized(username);
 			}
 		}
 	});

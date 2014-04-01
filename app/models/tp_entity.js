@@ -31,6 +31,11 @@
 			id: "00001",
 			number: "00001",
 			name: "Reusable Tabs Component"
+		},
+		{
+			id: "41443",
+			number: "41443",
+			name: "DEMO for Serch"
 		}
 	];
 })(App, DS);

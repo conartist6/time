@@ -1,6 +1,6 @@
-{{#if authenticated}}
+{{#if showHeader}}
 	<header>
-		<span class="title">TIME</span> {{view App.ClockView}}
+		<span class="title">TIME</span> {{view App.ClockView}} <span class="me">{{username}}</span>
 	</header>
 {{/if}}
 {{outlet}}

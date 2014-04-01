@@ -1,6 +1,6 @@
 (function(Em, App) {
 	"use strict"
-	App.DayRoute = Em.Route.extend({
+	App.DayRoute = App.AuthenticatedPage.extend({
 		model: function(routeParams) {
 			return this.store.find('day', App.DayRoute.parseUrlMoment(routeParams.date).unix());
 		},

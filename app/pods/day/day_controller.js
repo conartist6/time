@@ -1,6 +1,6 @@
 (function(Em, App) {
 	"use strict"
-	App.DayController = Em.ObjectController.extend(App.AuthenticatedPage, {
+	App.DayController = Em.ObjectController.extend({
 		tpCandidates: function() {
 			return App.TimeCandidateDayController.create({
 					content: this.get('model.tpTimeSpent'),
