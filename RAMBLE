@@ -7,3 +7,5 @@ why does dayController reload anything when you try to find a record?
 
 When branches are checked into gitlab record original commit times along with reviewer and commiter names
 Store this info for 3 months or until reviewers and commiters have both entered time for a day.
+
+Passing in [item]controllers: rewrap vs reopen? If reopen, reopen w/ mixin instead of inline def

@@ -37,7 +37,7 @@
 			return moment.langData()._weekdaysMin;
 		}.property(),
 
-		_weeks: function () {
+		_weeks: function (key, value, oldValue) {
 			var weeks = [],
 				days,
 				month = this.get('month'),
@@ -47,6 +47,9 @@
 				nextWeek;
 
 			if(!month) return null;
+			if(oldValue) {
+				debugger;
+			}
 
 			firstWeek = moment(month).startOf('week');
 			endOfMonth = moment(month).endOf('month');
@@ -56,17 +59,14 @@
 				nextWeek = moment(week).add('weeks', 1);
 				days = [];
 				for(var day = moment(week); day.isBefore(nextWeek); day.add('days', 1)) {
-					days.push({
-						moment: moment(day),
-						date: day.date(),
-						isInMonth: (day.isAfter(month) || day.isSame(month)) && day.isBefore(endOfMonth),
-						dayView: this.get('dayView')
-					});
+					days.push(this.store.recordForId('day', day.unix()));
 				}
 
 				weeks.push({
 					days: WeekController.create({
 						itemController: this.get('dayController'),
+						parentController: this,
+						target: this,
 						container: this.get('container'),
 						content: days
 					})
@@ -101,7 +101,21 @@
 			}
 
 			return view || DefaultDayView;
-		}.property()
+		}.property(),
+
+		dayController: function(key, controller, oldValue) {
+			if(arguments.length > 1) {
+				controller.reopen({
+					month: Em.computed.alias('parentController.parentController.month'),
+					isInMonth: function() {
+						(day.isAfter(month) || day.isSame(month)) && day.isBefore(endOfMonth)
+					}.property('month'),
+					dayView: this.get('dayView')
+					// });
+				});
+			}
+			return controller;
+		}.property('dayView')
 	});
 
 	HeaderController.reopen({

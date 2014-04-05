@@ -6,21 +6,13 @@
 		latency: 500
 	});
 
-	App.ApplicationAdapter = DS.FixtureAdapter.extend({
-	});
+	App.ApplicationAdapter = DS.FixtureAdapter;
 
-	App.DayAdapter = DS.BoundlessFixtureAdapter.extend({
-		emptyCallback: function(store, type, id) {
-			return {
-				timestamp: id
-			}
-		}
-	});
+	App.DayAdapter = DS.BoundlessFixtureAdapter;
 
 	App.TpEntityAdapter = DS.BoundlessFixtureAdapter.extend({
 		emptyCallback: function(store, type, id) {
 			return {
-				number: id,
 				name: "Unknown"
 			}
 		}
@@ -30,6 +22,7 @@
 		normalizeHash: {
 			day: function(hash) {
 				hash.id = hash.timestamp;
+				delete hash.timestamp;
 				return hash;
 			}
 		}

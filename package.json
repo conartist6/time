@@ -1,12 +1,18 @@
 {
-  "name"         : "time",
-  "version"      : "0.0.1",
-  "description"  : "A better way to keep track",
-  "author"       : "Conrad Buck <cbuck@switchfly.com>",
-  "dependencies" : {
+  "name": "time",
+  "version": "0.0.1",
+  "description": "A better way to keep track",
+  "author": "Conrad Buck <cbuck@switchfly.com>",
+  "dependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-compass": "~0.3.0",
-    "grunt-ember-templates": "0.4.10"
+    "grunt-ember-templates": "0.4.10",
+    "broccoli": "^0.6.0",
+    "broccoli-es6-concatenator": "^0.1.3",
+    "broccoli-static-compiler": "^0.1.3",
+    "broccoli-merge-trees": "^0.1.1",
+    "broccoli-template": "^0.1.0",
+    "broccoli-env": "0.0.1"
   },
   "devDependencies": {
     "bower": "~0.7.0",
@@ -20,5 +26,7 @@
     "sinon-chai": "~2.3.1",
     "sinon": "~1.6.0"
   },
-  "engines"      : {"node" : ">= 0.4.7"}
+  "engines": {
+    "node": ">= 0.4.7"
+  }
 }
