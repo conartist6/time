@@ -5,56 +5,52 @@
     <title>TIME</title>
 </head>
 <body>
-    <script type="text/javascript" src="vendor/jquery/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="vendor/momentjs/moment-with-langs-2.5.1.js"></script>
-    <script type="text/javascript" src="vendor/handlebars/handlebars-v1.2.1.js"></script>
-    <script type="text/javascript" src="vendor/ember/ember-1.3.1-debug.js"></script>
-    <script type="text/javascript" src="vendor/ember-data/ember-data-1.0.0beta6.js"></script>
+    <script type="text/javascript" src="../vendor/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../vendor/momentjs/moment-with-langs-2.5.1.js"></script>
+    <script type="text/javascript" src="../vendor/handlebars/handlebars-v1.2.1.js"></script>
+    <script type="text/javascript" src="../vendor/ember/ember-1.3.1-debug.js"></script>
+    <script type="text/javascript" src="../vendor/ember-jjabrams-resolver/ember-resolver.js"></script>
+    <script type="text/javascript" src="../vendor/ember-data/ember-data-1.0.0beta6.js"></script>
 
-    <script type="text/javascript" src="lib/ember_extensions.js"></script>
-    <script type="text/javascript" src="lib/prototype_extensions.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/lib/prototype_extensions.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/lib/boundless_fixture_adapter.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/lib/indexed_array_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/lib/shuffled_array_proxy.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/lib/authentication/authenticated_route.js"></script>
 
-    <script type="text/javascript" src="configuration/application.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/setup/application.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/setup/resolver.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/setup/router.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/setup/store.js"></script>
 
-    <script type="text/javascript" src="lib/shuffled_array_proxy.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/components/adjustable-areas-slider/adjustable_areas_slider_component.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/components/calendar-/calendar_component.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/components/calendar-/default_header/default_header_controller.js"></script>
 
-    <script type="text/javascript" src="configuration/router.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/calendar_event/calendar_event_model.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/day/day_model.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/tp_entity/tp_entity_model.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/time_spent/time_spent_model.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/tp_time_spent/tp_time_spent_model.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/data/calendar_time_spent/calendar_time_spent_model.js"></script>
 
-    <script type="text/javascript" src="models/calendar_event.js"></script>
-    <script type="text/javascript" src="models/day.js"></script>
-    <script type="text/javascript" src="models/tp_entity.js"></script>
-    <script type="text/javascript" src="models/time_spent.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/application/application_route.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/application/application_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/index/index_route.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/login/login_route.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/login/login_view.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/login/login_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/day_route.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/day_view.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/day_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/tp_entity/day_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/time_candidate/time_candidate.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/calendar/day_controller.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/day/calendar/day_view.js"></script>
+    <script type="text/javascript" src="../ugified/scripts/pods/router/clock/clock_view.js"></script>
 
-    <script type="text/javascript" src="configuration/store.js"></script>
+    <script type="text/javascript" src="../ugified/templates/templates-compiled.js"></script>
 
-    <script type="text/javascript" src="components/adjustable-areas-slider/adjustable_areas_slider_component.js"></script>
-    <script type="text/javascript" src="components/calendar-/calendar_component.js"></script>
-    <script type="text/javascript" src="components/calendar-/default_header/default_header_controller.js"></script>
-
-    <script type="text/javascript" src="lib/authentication/authenticated_route.js"></script>
-
-    <script type="text/javascript" src="pods/application/application_route.js"></script>
-    <script type="text/javascript" src="pods/application/application_controller.js"></script>
-    <script type="text/javascript" src="pods/index/index_route.js"></script>
-    <script type="text/javascript" src="pods/login/login_route.js"></script>
-    <script type="text/javascript" src="pods/login/login_view.js"></script>
-    <script type="text/javascript" src="pods/login/login_controller.js"></script>
-    <script type="text/javascript" src="pods/day/day_route.js"></script>
-    <script type="text/javascript" src="pods/day/day_view.js"></script>
-    <script type="text/javascript" src="pods/day/day_controller.js"></script>
-    <script type="text/javascript" src="pods/day/tp_entity/day_controller.js"></script>
-    <script type="text/javascript" src="pods/day/time_candidate/time_candidate.js"></script>
-    <script type="text/javascript" src="pods/day/calendar/day_controller.js"></script>
-    <script type="text/javascript" src="pods/day/calendar/day_view.js"></script>
-    <script type="text/javascript" src="pods/clock/clock_view.js"></script>
-
-    <script type="text/javascript" src="ugified/templates-compiled.js"></script>
-
-    <link rel="stylesheet" href="components/adjustable-areas-slider/adjustable_areas_slider_component.css">
-    <link rel="stylesheet" href="components/calendar-/calendar_component.css">
-    <link rel="stylesheet" href="pods/application/application.css">
-    <link rel="stylesheet" href="pods/login/login.css">
-    <link rel="stylesheet" href="pods/day/day.css">
-    <link rel="stylesheet" href="pods/day/calendar/day.css">
+    <link rel="stylesheet" href="../ugified/styles/app.css">
 </body>
 </html>

@@ -1,11 +1,8 @@
-(function(App, Em, moment) {
-	"use strict";
-	var DefaultHeaderView = Em.View.extend(),
-		DefaultDayView = Em.View.extend(),
-		HeaderController = Em.Object.extend(),
-		WeekController = Em.ArrayController.extend();
-
-	App.CalendarComponent = Em.Component.extend({
+var DefaultHeaderView = Em.View.extend(),
+	DefaultDayView = Em.View.extend(),
+	HeaderController = Em.Object.extend(),
+	WeekController = Em.ArrayController.extend(),
+	CalendarComponent = Em.Component.extend({
 		didInsertElement: function () {
 			this.$().children().first().addClass('calendar-component-head');
 		},
@@ -47,9 +44,6 @@
 				nextWeek;
 
 			if(!month) return null;
-			if(oldValue) {
-				debugger;
-			}
 
 			firstWeek = moment(month).startOf('week');
 			endOfMonth = moment(month).endOf('month');
@@ -108,28 +102,30 @@
 				controller.reopen({
 					month: Em.computed.alias('parentController.parentController.month'),
 					isInMonth: function() {
-						(day.isAfter(month) || day.isSame(month)) && day.isBefore(endOfMonth)
+						var day = this.get('moment'),
+							month = this.get('month');
+						return (day.isAfter(month) || day.isSame(month)) && day.isBefore(moment(month).endOf('month'));
 					}.property('month'),
 					dayView: this.get('dayView')
-					// });
 				});
 			}
 			return controller;
 		}.property('dayView')
 	});
 
-	HeaderController.reopen({
-		calendar: null,
-		monthName: function() {
-			return moment(this.get('calendar.month')).format("MMMM");
-		}.property('calendar.month')
-	});
+HeaderController.reopen({
+	calendar: null,
+	monthName: function() {
+		return moment(this.get('calendar.month')).format("MMMM");
+	}.property('calendar.month')
+});
 
-	DefaultHeaderView.reopen({
-		templateName: 'components/calendar-/default_header'
-	});
+DefaultHeaderView.reopen({
+	templateName: 'components/calendar-/default_header'
+});
 
-	DefaultDayView.reopen({
-		templateName: 'components/calendar-/default_day'
-	});
-})(App, Ember, moment);
+DefaultDayView.reopen({
+	templateName: 'components/calendar-/default_day'
+});
+
+export default CalendarComponent;

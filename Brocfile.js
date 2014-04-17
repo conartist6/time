@@ -1,64 +1,50 @@
-/*
- * Goals: reduce typing in index. Automatically include all files in a single packaging state.
- * CSS and hbs to be concatenated. Components to be included individually by name, to include subordinate files thru es6 catter.
- * 
- */
+var pathResolver = require('./app/setup/path_resolver').pathResolver;
+
 module.exports = function (broccoli) {
-    var filterTemplates = require('broccoli-template'),
-        compileES6 = require('broccoli-es6-concatenator'),
+    var templateCompiler = require('broccoli-ember-hbs-template-compiler'),
+        es6transpiler = require('broccoli-es6-module-transpiler'), 
         pickFiles = require('broccoli-static-compiler'),
         mergeTrees = require('broccoli-merge-trees'),
-        env = require('broccoli-env').getEnv(),
-        fs = require('fs');
+        concat = require('broccoli-concat'),
+        env = require('broccoli-env').getEnv();
 
-
-    function readDir(base, recursive, prefix) {
-        var dirs = [],
-            path,
-            directories,
-            stack = [];
-
-        function _readDir() {
-            path = base + stack.join('/');
-            directories = fs.readdirSync(path).filter(function(file) {
-                return fs.statSync(path + '/' + file).isDirectory();
-            });
-            if(!directories) {
-                return;
-            }
-            directories.forEach(function(dir) {
-                stack.push(dir);
-                path = stack.join('/');
-
-                dirs.push(base + path);
-
-                if(recursive) {
-                    _readDir();
-                }
-                stack.pop();
-            });
-        }
-        _readDir(path);
-        return dirs;
-    }
-
-    // readDir('./app/pods/', true);
-    // var app = mergeTrees(readDir('./app/components/', false));
-    
-    // console.log(app);
-
-    scripts = pickFiles('app', {
+    var scripts = pickFiles('app', {
         srcDir: '/',
-        files: 'components/**/*.css',
-        destDir: 'ugified'
+        files: ['**/*.js'],
+        destDir: '/scripts'
     });
 
-    return scripts;
+    scripts = es6transpiler(scripts, {
+        srcDir: 'app',
+        resolver: pathResolver,
+        files: ['pods/router/*/*.js', 'pods/data/*/*.js'],
+        globals: {
+            "Em": false,
+            "moment": false,
+            "DS": false,
+            "requirejs": false
+        }
+    });
 
-    // app = filterTemplates(app, {
-    //     extensions: ['hbs', 'handlebars'],
-    //     compileFunction: 'Ember.Handlebars.compile'
-    // });
+    var templates = pickFiles('app', {
+        srcDir: '/',
+        files: ['**/*.hbs'],
+        destDir: '/templates'
+    });
+
+    templates = templateCompiler(templates);
+
+    templates = concat(templates, {
+        inputFiles: ["**/*.js"],
+        outputFile: '/templates/templates-compiled.js',
+    });
+
+    var styles = concat('app', {
+        inputFiles: ['**/*.css'],
+        outputFile: '/styles/app.css'
+    });
+
+    return mergeTrees([scripts, templates, styles]);
 
   //   var styles = 'styles'
   //       styles = pickFiles(styles, {
@@ -69,27 +55,5 @@ module.exports = function (broccoli) {
 
   //   var sourceTrees = [app, styles];
 
-  //   //var appAndDependencies = new mergeTrees(sourceTrees, { overwrite: true })
-
-  // var appJs = compileES6(sourceTrees, {
-  //   ignoredModules: [
-  //     'resolver'
-  //   ],
-  //   inputFiles: [
-  //     'todomvc/**/*.js'
-  //   ],
-  //   legacyFilesToAppend: [
-  //     'jquery.js',
-  //     'handlebars.js',
-  //     'ember.js',
-  //   ],
-  //   wrapInEval: true,
-  //   outputFile: '/assets/application.js'
-  // })
-
   // var appCss = compileSass(sourceTrees, 'appkit/app.scss', 'assets/app.css')
-
-  // var publicFiles = 'public'
-
-  // return mergeTrees([appJs, appCss, publicFiles])
 }

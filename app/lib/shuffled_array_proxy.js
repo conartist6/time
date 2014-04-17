@@ -1,24 +1,22 @@
-(function(App, Em) {
-	"use strict";
-	App.ShuffledArrayProxy = Em.ArrayProxy.extend({
-		init: function() {
-			this._super();
-			var content = this.get('content'), //
-				contentLength = content.get('length');
+export default Em.ArrayProxy.extend({
+	init: function() {
+		this._super();
+		var content = this.get('content'), //
+			contentLength = content.get('length'),
+			i;
 
-			this.muddle = new Array(content.length);
+		this.muddle = new Array(content.length);
 
-			for(var i = 0; i < contentLength; i++) {
-				this.muddle[i] = i;
-			}
-
-			for(var i = 0; i < contentLength; i++) {
-				content.swap(Math.randomIntBetween(0, i), contentLength - i);
-			}
-		},
-		muddle: null,
-		objectAtContent: function(idx) {
-			return this.get('content').objectAt(this.muddle[idx]);
+		for(i = 0; i < contentLength; i++) {
+			this.muddle[i] = i;
 		}
-	});
-})(App, Ember);
+
+		for(i = 0; i < contentLength; i++) {
+			content.swap(Math.randomIntBetween(0, i), contentLength - i);
+		}
+	},
+	muddle: null,
+	objectAtContent: function(idx) {
+		return this.get('content').objectAt(this.muddle[idx]);
+	}
+});

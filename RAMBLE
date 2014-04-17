@@ -9,3 +9,7 @@ When branches are checked into gitlab record original commit times along with re
 Store this info for 3 months or until reviewers and commiters have both entered time for a day.
 
 Passing in [item]controllers: rewrap vs reopen? If reopen, reopen w/ mixin instead of inline def
+
+If we created days for each month currently under display how do we keep a handle on the group of models which should be discarded when the month is no longer in use IF the records are still in a blank state?
+	>We could load them into a separate store? This seems silly.
+	>We could put them in an array at load time and iterate over it when we move to the next month

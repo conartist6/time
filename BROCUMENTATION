@@ -1,0 +1,8 @@
+Broccoli.
+
+Broccoli helps you build development resources into runtime resources.
+
+The simplest Broccoli build would take a whole folder full of development files and simply dump them into a directory which is served by an http server. The setup might look something like
+
+Brocfile.js:
+	
