@@ -4,7 +4,8 @@
 		needs: 'login',
 		beforeModel: function() {
 			if(this.controllerFor('application').get('authenticated')) {
-				transitionToDay();
+				// transitionToDay();
+				this.transitionTo('week');
 			}
 		},
 
@@ -19,7 +20,8 @@
 
 		actions: {
 			login: function(username, password) {
-				this.transitionToDay("1391760000");
+				// this.transitionToDay("1391760000");
+				this.transitionTo('week');
 				return this.isAuthorized(username);
 			}
 		}

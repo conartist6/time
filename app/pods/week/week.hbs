@@ -1,6 +1,6 @@
 <div>
   <input type="button" name="fav" value="Add to Favorites" onclick="">
-  <input type="button" name="del" value="Remove from Table" onclick="deleteRow('predicted_table')">
+  <input type="button" name="del" value="Remove from Table" {{action "deleteRow" "predicted_table" target="view"}}>
 </div>
 <br/>
 <table id="predicted_table" border="1" width="100%">
@@ -42,7 +42,7 @@
 
 <p>Favorites</p>
 <div>
-  <input type="button" name="del" value="Remove from Favorites" onclick="deleteRow('favorites_table')">
+  <input type="button" name="del" value="Remove from Favorites" {{action "deleteRow" "favorites_table" target="view"}}>
 </div>
 <br/>
 <table id="favorites_table" border="1" width="100%">
