@@ -1,0 +1,90 @@
+<div>
+  <input type="button" name="fav" value="Add to Favorites" onclick="">
+  <input type="button" name="del" value="Remove from Table" onclick="deleteRow('predicted_table')">
+</div>
+<br/>
+<table id="predicted_table" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Fav</th>
+      <th>Remove</th>
+      <th>TP #</th>
+      <th>Assignment Name</th>
+      <th>Date/Time</th>
+      <th>Mon</th>
+      <th>Tues</th>
+      <th>Wed</th>
+      <th>Thurs</th>
+      <th>Fri</th>
+      <th>Sat</th>
+      <th>Sun</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each tp}}
+      <tr>
+        <td><input type="checkbox"/></td>
+        <td><input type="checkbox"/></td>
+        <td>{{id}}</td>
+        <td>{{name}}</td>
+        <td>{{date}}</td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<p>Favorites</p>
+<div>
+  <input type="button" name="del" value="Remove from Favorites" onclick="deleteRow('favorites_table')">
+</div>
+<br/>
+<table id="favorites_table" border="1" width="100%">
+  <thead>
+    <tr>
+      <th>Fav</th>
+      <th>Remove</th>
+      <th>TP #</th>
+      <th>Assignment Name</th>
+      <th>Date/Time</th>
+      <th>Mon</th>
+      <th>Tues</th>
+      <th>Wed</th>
+      <th>Thurs</th>
+      <th>Fri</th>
+      <th>Sat</th>
+      <th>Sun</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each favorite in model}}
+      <tr>
+        <td><input type="checkbox" checked="true"/></td>
+        <td><input type="checkbox"/></td>
+        <td>Bam TP #</td>
+        <td>Bam Assignment name omg what greatstuffstuffstuffstuffstuffstuffstuff</td>
+        <td>Bam date and time stuff</td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+        <td><input type="text" size="5"></td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+<br/>
+
+<form id="TP_picker">
+  <label for="TP_select">Enter TP #</label>
+  <input type="text" id="TP_select"/>
+  <input type="text" size="100">
+</form>

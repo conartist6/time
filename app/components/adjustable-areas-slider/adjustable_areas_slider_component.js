@@ -64,9 +64,9 @@
 			//This property stores precise percentages, calculates from minutes if it must,
 			//and updates minutes from precise values.
 			if(arguments.length > 1) {
-				Em.run.next(this, this.set, 'minutes', Math.ceil(pct / 100 * 8 * 60));
-				// this.set('minutes',
-					// Math.ceil(pct / 100 * 8 * 60 / 15 - .5) * 15);
+				// Em.run.next(this, this.set, 'minutes', Math.ceil(pct / 100 * 8 * 60));
+				this.set('minutes',
+					Math.ceil(pct / 100 * 8 * 60 / 15 - .5) * 15);
 			} else {
 				pct = this.get('minutes') / (8 * 60) * 100;
 			}
